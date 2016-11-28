@@ -1,0 +1,12 @@
+{
+  "name": "react-router-branching",
+  "version": "0.0.0",
+  "description": "description goes here",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/sleexyz/react-router-branching",
+    "type": "git"
+  },
+  "author": "Sean Lee",
+  "license": "MIT"
+}
