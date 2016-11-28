@@ -2,7 +2,7 @@
 
 #### Todo:
 
-- add dependencies
+- ~add dependencies~
 - implement guards
 - implement permission based routing
 - decide name of project

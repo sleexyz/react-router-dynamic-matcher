@@ -22,8 +22,7 @@ const _makeModifyRoute = (indexRouteTransformer, childRouteTransformer) => funct
   };
 };
 
-const identity = (x) => x;
-const _modifyRouteUnguarded = _makeModifyRoute(identity, identity);
+const _modifyRouteUnguarded = _makeModifyRoute((x) => x, (x) => x);
 const _modifyRouteGuarded = _makeModifyRoute(
   (indexRoute) => {
     throw new Error("TODO: Implement indexRoute guarding transformer");
@@ -38,8 +37,8 @@ const _modifyRouteGuarded = _makeModifyRoute(
 
 const dynamic = (getStateRaw, options={}) => (branches) => (route) => {
   const {
-    filter = identity,
-    guard = true//TODO: implement
+    filter = (x) => x,
+    guard = true //TODO: implement
   } = options;
 
   const getState = () => filter(getStateRaw());
