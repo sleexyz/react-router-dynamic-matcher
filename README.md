@@ -1,15 +1,19 @@
-# React Router Branching
+# React Router Dynamic Matcher
 
-#### Todo:
+This library provides a nice little API to match to your routes dynamically based on your app's state.
 
-- ~add dependencies~
-- implement guards
-- implement permission based routing
-- decide name of project
-- decide names of functions
-- decide public facing api
-- write tests
+
+## Example
+
+## Application: Auth Routing
+For most applications, you'll probably want two branches: `Authenticated` and `Unauthenticated`:
+
+```js
+```
+
 
 ## Application: Role-based Routing
+For more complicated applications, you might have multiple roles:
 
-## Application: Permission-based Routing (TODO)
+```js
+```

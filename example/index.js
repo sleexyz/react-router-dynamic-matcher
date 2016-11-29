@@ -5,7 +5,7 @@ const { createStore, applyMiddleware } = require("redux");
 const { default: thunk } = require("redux-thunk");
 const { connect, Provider } = require("react-redux");
 
-const dynamic = require("../index.js");
+const matcher = require("../index.js");
 
 const logger = store => next => action => {
   const result = next(action);
@@ -18,11 +18,6 @@ const initialState = { role: undefined};
 const reducer = (state, {state: newState}) => Object.assign({}, state, newState);
 const setState = (state) => ({ type: "setState", state});
 const store = createStore(reducer, initialState, applyMiddleware(thunk, logger));
-
-store.dispatch((dispatch) => {
-  dispatch(setState({role: "author"}));
-});
-
 const App = ({children}) => children;
 
 const Comp = (msg) => connect((state) => state)(
@@ -30,40 +25,52 @@ const Comp = (msg) => connect((state) => state)(
     return (
       <div>
         <h2>{msg}</h2>
-        <p> role: {role}</p>
         {children}
       </div>
     );
   }
 );
 
-// Goal:
-// Dynamic routing
-// Route guarding with redirect
-// Up to you to make sure your conditions are mutually exclusive!
-
-
-const root = {
-  path: "/",
-  component: Comp("hello world!")
+const options = {
+  filter: ({role}) => ({role}),
+  guard: true
 };
 
-dynamic(store.getState) ([
+const root = matcher(store.getState, options) ([
   {
+    name: "Author",
     predicate: ({role}) => role == "author",
-    indexRoute: {component: Comp("index")},
+    indexRoute: {component: Comp("index - author")},
     childRoutes: [
       {
         path: "asdf",
-        component: Comp ("asdf")
+        component: Comp ("asdf - author")
       }
-    ]
-  }
-])(root);
+    ],
+    fallback: () => {
+      console.log("TODO: redirect");
+    }
+  },
+  {
+    name: "Unauthenticated",
+    predicate: () => true,
+    indexRoute: {component: Comp("index - default")},
+    childRoutes: [
+      {
+        path: "asdf",
+        component: Comp ("asdf - default")
+      }
+    ],
+    fallback: () => {
+      console.log("TODO: redirect");
+    }
+  },
+])({
+  path: "/",
+  component: Comp("hello world!")
+});
 
-console.log(root);
-
-const Main =  (
+const Main = (
   <Provider store={store}>
     <Router history={hashHistory} routes={root}/>
   </Provider>

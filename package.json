@@ -1,10 +1,10 @@
 {
-  "name": "react-router-branching",
+  "name": "react-router-dynamic-matcher",
   "version": "0.0.0",
-  "description": "description goes here",
+  "description": "Match to routes dynamically based on your app's state.",
   "main": "index.js",
   "repository": {
-    "url": "https://github.com/sleexyz/react-router-branching",
+    "url": "https://github.com/sleexyz/react-router-dynamic-matcher",
     "type": "git"
   },
   "author": "Sean Lee",
