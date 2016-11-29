@@ -1,12 +1,15 @@
 const {createClass, createFactory, createElement: e} = require("react");
+const {connect} = require("react-redux");
+require("redux-thunk");
+require("redux");
 
-const _makeRouteModifier = (indexRouteTransformer, childRoutesTransformer) => function (getState, branches, route) {
+const _makeRouteModifier = (indexRouteTransformer, childRoutesTransformer) => function (getState, filter, branches, route) {
   route.getIndexRoute = (_partialNextState, cb) => {
     const state = getState();
     for (let {predicate, indexRoute, fallback, name} of branches) {
       if (predicate(state)) {
         const err = null;
-        cb(err, indexRouteTransformer(indexRoute, getState, predicate, fallback, name));
+        cb(err, indexRouteTransformer(indexRoute, filter, predicate, fallback, name));
         return;
       }
     }
@@ -16,30 +19,30 @@ const _makeRouteModifier = (indexRouteTransformer, childRoutesTransformer) => fu
     for (let {predicate, childRoutes, fallback, name} of branches) {
       if (predicate(state)) {
         const err = null;
-        cb(err, childRoutesTransformer(childRoutes, getState, predicate, fallback, name));
+        cb(err, childRoutesTransformer(childRoutes, filter, predicate, fallback, name));
         return;
       }
     }
   };
 };
 
-const Guard = (getState, predicate, fallback, name) => createClass({
-  _check() {
-    if (!predicate(getState())) {
+const makeGuard = (filter, predicate, fallback, name) => connect(filter)(createClass({
+  _check(props) {
+    if (!predicate(props)) {
       fallback();
     }
   },
   displayName: name + 'Guard',
   componentWillMount() {
-    this._check();
+    this._check(this.props);
   },
   componentWillReceiveProps(props) {
-    this._check();
+    this._check(props);
   },
   render() {
     return this.props.children;
   }
-});
+}));
 
 const Contain = (parent, child) => {
   const Parent = createFactory(parent);
@@ -50,13 +53,13 @@ const Contain = (parent, child) => {
 };
 
 const _modifyRouteGuarded = _makeRouteModifier(
-  (indexRoute, getState, predicate, fallback, name) => {
-    const component = Contain(Guard(getState, predicate, fallback, name), indexRoute.component);
+  (indexRoute, filter, predicate, fallback, name) => {
+    const component = Contain(makeGuard(filter, predicate, fallback, name), indexRoute.component);
     component.displayName = name + "GuardContainer";
     return {component};
   },
-  (childRoutes, getState, predicate, fallback, name) => {
-    const component = Guard(getState, predicate, fallback, name);
+  (childRoutes, filter, predicate, fallback, name) => {
+    const component = makeGuard(filter, predicate, fallback, name);
     return [{childRoutes, component}];
   }
 );
@@ -70,9 +73,9 @@ const matcher = (getStateRaw, options={}) => (branches) => (route) => {
   } = options;
   const getState = () => filter(getStateRaw());
   if (guard) {
-    _modifyRouteGuarded(getState, branches, route);
+    _modifyRouteGuarded(getState, filter, branches, route);
   } else {
-    _modifyRouteUnguarded(getState, branches, route);
+    _modifyRouteUnguarded(getState, filter, branches, route);
   }
   return route;
 };

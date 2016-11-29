@@ -1,6 +1,6 @@
 # React Router Dynamic Matcher
 
-This library provides a nice little API to match to your routes dynamically based on your app's state.
+This library provides a nice little API to match to your routes dynamically based on your app's state. Works with [redux-thunk](https://github.com/gaearon/redux-thunk).
 
 
 ## Example

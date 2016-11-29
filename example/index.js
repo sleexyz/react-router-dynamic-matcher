@@ -1,9 +1,9 @@
-const React = require("react");
-const { Router, hashHistory } = require("react-router");
-const { render } = require("react-dom");
-const { createStore, applyMiddleware } = require("redux");
-const { default: thunk } = require("redux-thunk");
-const { connect, Provider } = require("react-redux");
+const React = {createClass} = require("react");
+const {Router, hashHistory, Link} = require("react-router");
+const {render} = require("react-dom");
+const {createStore, applyMiddleware} = require("redux");
+const {default: thunk} = require("redux-thunk");
+const {connect, Provider} = require("react-redux");
 
 const matcher = require("../index.js");
 
@@ -13,18 +13,43 @@ const logger = store => next => action => {
   return result;
 };
 
-const initialState = { role: undefined};
+const initialState = {authenticated: false};
 
 const reducer = (state, {state: newState}) => Object.assign({}, state, newState);
-const setState = (state) => ({ type: "setState", state});
+const setState = (state) => ({type: "setState", state});
 const store = createStore(reducer, initialState, applyMiddleware(thunk, logger));
-const App = ({children}) => children;
+window.store = store;
 
-const Comp = (msg) => connect((state) => state)(
-  ({role, children}) => {
+
+const App = connect((state) => state)(createClass({
+  _onClick(e) {
+    e.preventDefault();
+    this.props.dispatch((dispatch) => {
+      dispatch(setState(({authenticated: !this.props.authenticated})));
+    });
+  },
+  render() {
+    const buttonText = this.props.authenticated ? "Logout" : "Login";
+    return (
+    <div>
+      <h1>React Router Dynamic Matcher Example</h1>
+      <p>
+        <button onClick={this._onClick}>{buttonText}</button>
+      </p>
+      <p>
+        <Link to="/">Home</Link> <Link to="/about">About</Link>
+      </p>
+      <div>{this.props.children}</div>
+    </div>
+    );
+  }
+}));
+
+const CustomComponent = (msg) => connect((state) => state)(
+  ({authenticated, children}) => {
     return (
       <div>
-        <h2>{msg}</h2>
+        <h2>{msg + ' - ' +  (authenticated ? "authenticated" : "unauthenticated")}</h2>
         {children}
       </div>
     );
@@ -32,47 +57,52 @@ const Comp = (msg) => connect((state) => state)(
 );
 
 const options = {
-  filter: ({role}) => ({role}),
+  filter: ({authenticated}) => ({authenticated}),
   guard: true
 };
 
-const root = matcher(store.getState, options) ([
+const Index = CustomComponent("(index)");
+const About = CustomComponent("/about");
+
+const routes = matcher(store.getState, options) ([
   {
-    name: "Author",
-    predicate: ({role}) => role == "author",
-    indexRoute: {component: Comp("index - author")},
+    name: "Authenticated",
+    predicate: ({authenticated}) => authenticated === true,
+    indexRoute: {component: Index},
     childRoutes: [
       {
-        path: "asdf",
-        component: Comp ("asdf - author")
+        path: "about",
+        component: About
       }
     ],
     fallback: () => {
-      console.log("TODO: redirect");
+      console.log("guard fallback activated: redirecting!");
+      hashHistory.push("/");
     }
   },
   {
     name: "Unauthenticated",
-    predicate: () => true,
-    indexRoute: {component: Comp("index - default")},
+    predicate: ({authenticated}) => authenticated === false,
+    indexRoute: {component: Index},
     childRoutes: [
       {
-        path: "asdf",
-        component: Comp ("asdf - default")
+        path: "about",
+        component: About
       }
     ],
     fallback: () => {
-      console.log("TODO: redirect");
+      console.log("guard fallback activated: redirecting!");
+      hashHistory.push("/");
     }
   },
 ])({
   path: "/",
-  component: Comp("hello world!")
+  component: App
 });
 
 const Main = (
   <Provider store={store}>
-    <Router history={hashHistory} routes={root}/>
+    <Router history={hashHistory} routes={routes}/>
   </Provider>
 );
 
