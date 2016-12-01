@@ -64,7 +64,7 @@ const options = {
 const Index = CustomComponent("(index)");
 const About = CustomComponent("/about");
 
-const routes = matcher(store.getState, options) ([
+const routes = matcher(store, options) ([
   {
     name: "Authenticated",
     predicate: ({authenticated}) => authenticated === true,
@@ -75,8 +75,8 @@ const routes = matcher(store.getState, options) ([
         component: About
       }
     ],
-    fallback: () => {
-      console.log("guard fallback activated: redirecting!");
+    fallback: (dispatch, getState, extraArgument) => {
+      alert("Guard fallback activated: redirecting!");
       hashHistory.push("/");
     }
   },
@@ -90,8 +90,8 @@ const routes = matcher(store.getState, options) ([
         component: About
       }
     ],
-    fallback: () => {
-      console.log("guard fallback activated: redirecting!");
+    fallback: (dispatch, getState, extraArgument) => {
+      alert("Guard fallback activated: redirecting!");
       hashHistory.push("/");
     }
   },
