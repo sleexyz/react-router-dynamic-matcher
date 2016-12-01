@@ -18,11 +18,11 @@ const USER = "USER";
 const UNAUTHENTICATED = "UNAUTHENTICATED";
 
 const roleToString = (role) => {
-    switch (role) {
+  switch (role) {
     case ADMIN: return "Admin";
     case USER: return "User";
     case UNAUTHENTICATED: return "Unauthenticated";
-    }
+  }
 }
 
 const initialState = {role: UNAUTHENTICATED};
@@ -45,28 +45,29 @@ const App = connect((state) => state)(createClass({
     return <button onClick={onClick}>{buttonText}</button>;
   },
   render() {
-    return <div>
-    <h1>React Router Dynamic Matcher Example - Role</h1>
-
-    <p> {this._renderButton(ADMIN)} </p>
-    <p> {this._renderButton(USER)} </p>
-    <p> {this._renderButton(UNAUTHENTICATED)} </p>
-    <p>
-        <Link to="/">Home</Link> <Link to="/about">About</Link>
-    </p>
-    <div>{this.props.children}</div>
-    </div>;
+    return (
+      <div>
+        <h1>React Router Dynamic Matcher Example - Role</h1>
+        <p> {this._renderButton(ADMIN)} </p>
+        <p> {this._renderButton(USER)} </p>
+        <p> {this._renderButton(UNAUTHENTICATED)} </p>
+        <p>
+          <Link to="/">Home</Link> <Link to="/about">About</Link>
+        </p>
+        <div>{this.props.children}</div>
+      </div>
+    );
   }
 }));
 
 const CustomComponent = (msg) => connect((state) => state)(
   ({role, children}) => {
     return (
-        <div>
-            <h2>{msg}</h2>
-            <h4>{"You are " +  roleToString(role)}</h4>
-            {children}
-        </div>
+      <div>
+        <h2>{msg}</h2>
+        <h4>{"You are " +  roleToString(role)}</h4>
+        {children}
+      </div>
     );
   }
 );
@@ -80,21 +81,21 @@ const options = {
 };
 
 const routes = matcher(store, options) ([
-    {
-        name: "Admin",
-        predicate: ({role}) => role === ADMIN,
-        indexRoute: {component: Index},
-        childRoutes: [
-            {
-                path: "about",
-                component: About
-            }
-        ],
-        fallback: (dispatch, getState, extraArgument) => {
-            alert("Guard fallback activated: redirecting!");
-            hashHistory.push("/");
-        }
-    },
+  {
+    name: "Admin",
+    predicate: ({role}) => role === ADMIN,
+    indexRoute: {component: Index},
+    childRoutes: [
+      {
+        path: "about",
+        component: About
+      }
+    ],
+    fallback: (dispatch, getState, extraArgument) => {
+      alert("Guard fallback activated: redirecting!");
+      hashHistory.push("/");
+    }
+  },
   {
     name: "User",
     predicate: ({role}) => role === USER,

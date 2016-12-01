@@ -31,16 +31,16 @@ const App = connect((state) => state)(createClass({
   render() {
     const buttonText = this.props.authenticated ? "Logout" : "Login";
     return (
-    <div>
-      <h1>React Router Dynamic Matcher Example - Auth</h1>
-      <p>
-        <button onClick={this._onClick}>{buttonText}</button>
-      </p>
-      <p>
-        <Link to="/">Home</Link> <Link to="/about">About</Link>
-      </p>
-      <div>{this.props.children}</div>
-    </div>
+      <div>
+        <h1>React Router Dynamic Matcher Example - Auth</h1>
+        <p>
+          <button onClick={this._onClick}>{buttonText}</button>
+        </p>
+        <p>
+          <Link to="/">Home</Link> <Link to="/about">About</Link>
+        </p>
+        <div>{this.props.children}</div>
+      </div>
     );
   }
 }));

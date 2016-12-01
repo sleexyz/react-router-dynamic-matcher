@@ -1,4 +1,4 @@
-# React Router Dynamic Matcher Example
+# React Router Dynamic Matcher Example - Auth
 
 This example has two branches: `Authenticated`, or `Unauthenticated`
 
