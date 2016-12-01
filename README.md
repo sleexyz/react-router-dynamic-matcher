@@ -2,34 +2,49 @@
 
 This library provides a nice little API to match to your routes dynamically based on your app's state. 
 
-Currently it only works with redux apps that use [redux-thunk](https://github.com/gaearon/redux-thunk).
+Works with Apps that use redux and [redux-thunk](https://github.com/gaearon/redux-thunk).
 
+[React Router R](https://github.com/sleexyz/react-router-r) compatible.
 
+## Applications:
 
-## Usage
+</br>
 
-### Application: Auth Routing
-For most applications, you'll probably only want two branches: `Authenticated` and `Unauthenticated`:
+#### Authentication-based Routing
+In many applications, your routes might have two branches: `Authenticated` and `Unauthenticated`.
+
 
 See [`./example/index.js`](./example/index.js) for an example.
 
-### Application: Role-based Routing
-For more complicated applications, you might have multiple roles.
+</br>
 
-*TODO:* Provide an example!
+#### Role-based Routing
+For more complicated applications, you might have multiple roles, each of which have their own set of routes.
 
-### ~Application: Permissions-based Routing~
-Currently this library doesn't have a nice way of doing permission-based routing :(
+**TODO:** Provide an example!
+
+</br>
+
+#### ~~Permissions-based Routing~~
+Currently this library doesn't have a nice way of doing permission-based routing :'(
+
+</br>
 
 ## API
 This library is exported as a function, `matcher`, which can be used to modify a route:
 
-```flow
+```js
 matcher : (getState: () => State, options?: Options) 
   => (branches: [Branch]) 
   => (route: Route) 
   => Route
 
+```
+
+where
+
+
+```js
 type Options = {
   filter?: (state: State) => State,
   guard?: boolean
@@ -42,13 +57,9 @@ type Branch = {
   fallback?: Action
   name: string
 }
-
 ```
 
-where
-
-
-```flow
+```js
 type Action = ... // Redux-Thunk action
 
 type Dispatch = ... // Redux-Thunk dispatcher
@@ -59,7 +70,7 @@ type Route = ... // React Router PlainRoute
 
 ```
 
-The predicates of the branches are tried in declaration order on the Redux store, and if a predicate succeeds, then React Router will dynamically route with the corresponding `indexRoute` and `childRoute`.
+The predicates of the branches are tried in declaration order on the Redux store, and if a predicate succeeds, then React Router will dynamically route with the corresponding branche's `indexRoute` and `childRoutes`.
 
 ### Options:
 
