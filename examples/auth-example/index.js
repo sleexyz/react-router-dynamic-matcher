@@ -5,7 +5,7 @@ const {createStore, applyMiddleware} = require("redux");
 const {default: thunk} = require("redux-thunk");
 const {connect, Provider} = require("react-redux");
 
-const matcher = require("../index.js");
+const matcher = require("../../index.js");
 
 const logger = store => next => action => {
   const result = next(action);
@@ -31,16 +31,16 @@ const App = connect((state) => state)(createClass({
   render() {
     const buttonText = this.props.authenticated ? "Logout" : "Login";
     return (
-    <div>
-      <h1>React Router Dynamic Matcher Example</h1>
-      <p>
-        <button onClick={this._onClick}>{buttonText}</button>
-      </p>
-      <p>
-        <Link to="/">Home</Link> <Link to="/about">About</Link>
-      </p>
-      <div>{this.props.children}</div>
-    </div>
+      <div>
+        <h1>React Router Dynamic Matcher Example - Auth</h1>
+        <p>
+          <button onClick={this._onClick}>{buttonText}</button>
+        </p>
+        <p>
+          <Link to="/">Home</Link> <Link to="/about">About</Link>
+        </p>
+        <div>{this.props.children}</div>
+      </div>
     );
   }
 }));
@@ -56,13 +56,13 @@ const CustomComponent = (msg) => connect((state) => state)(
   }
 );
 
+const Index = CustomComponent("(index)");
+const About = CustomComponent("/about");
+
 const options = {
   filter: ({authenticated}) => ({authenticated}),
   guard: true
 };
-
-const Index = CustomComponent("(index)");
-const About = CustomComponent("/about");
 
 const routes = matcher(store, options) ([
   {

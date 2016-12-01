@@ -54,7 +54,7 @@ type Route = ... // React Router PlainRoute
 
 The predicates of the branches are tried in declaration order on the Redux store, and if a predicate succeeds, then React Router will route with the corresponding branch's `indexRoute` and `childRoutes`.
 
-See [`./example/index.js`](./example/index.js) for an example.
+See [`./examples/auth-example/index.js`](./examples/auth-example/index.js) for an example.
 
 </br>
 
@@ -91,14 +91,14 @@ When `guard` is set to false, then components are not guarded, and nothing will 
 In many applications, your routes might have two branches: `Authenticated` and `Unauthenticated`.
 
 
-See [`./example/index.js`](./example/index.js) for an example.
+See [`./examples/auth-example/index.js`](./examples/auth-example/index.js).
 
 </br>
 
 #### Role-based Routing
 For more complicated applications, you might have multiple roles, each of which have their own set of routes.
 
-**TODO:** Provide an example!
+See [`./examples/role-example/index.js`](./examples/role-example/index.js).
 
 </br>
 
