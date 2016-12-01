@@ -34,9 +34,9 @@ Currently this library doesn't have a nice way of doing permission-based routing
 This library is exported as a function, `matcher`, which can be used to modify a route:
 
 ```js
-matcher : (getState: () => State, options?: Options) 
-  => (branches: [Branch]) 
-  => (route: Route) 
+matcher : (store : Store, options? : Options) 
+  => (branches : [Branch]) 
+  => (route : Route) 
   => Route
 
 ```
@@ -46,16 +46,16 @@ where
 
 ```js
 type Options = {
-  filter?: (state: State) => State,
-  guard?: boolean
+  filter? : (state: State) => State,
+  guard? : boolean
 }
 
 type Branch = {
-  predicate: (state: State) => boolean,
-  indexRoute: IndexRoute,
-  childRoutes: [Route],
-  fallback?: Action
-  name: string
+  predicate : (state: State) => boolean,
+  indexRoute : IndexRoute,
+  childRoutes : [Route],
+  fallback? : Action
+  name : string
 }
 ```
 
@@ -64,7 +64,9 @@ type Action = ... // Redux-Thunk action
 
 type Dispatch = ... // Redux-Thunk dispatcher
 
-type State = ... // Redux store
+type State = ... // Redux state
+
+type Store = ... // Redux store object
 
 type Route = ... // React Router PlainRoute
 
@@ -74,7 +76,7 @@ The predicates of the branches are tried in declaration order on the Redux store
 
 ### Options:
 
-#### `guard`
+#### `guard : boolean`
 
 `guard` *is set to true by default.*
 
@@ -85,7 +87,7 @@ For example, one can set `fallback` to a callback that dispatches a redirect act
 
 When it set to false, then components are not guarded.
 
-#### `filter`
+#### `filter : (state : State) => State`
 
 `filter` *is set to* `(x) => x` *by default.*
 

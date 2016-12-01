@@ -12,27 +12,30 @@ type Component = Object
 // from your app:
 type State = Object
 
+// from redux:
+type Store = Object
+
 // from redux-thunk:
 type Dispatch = function
 
 // from redux-thunk:
 type Action = (
-  dispatch: Dispatch,
-  getState: () => State,
-  extraArgument: any
+  dispatch : Dispatch,
+  getState : () => State,
+  extraArgument : any
 )
   => void
 
 
 // from react-router:
-type IndexRoute = {component: Component}
+type IndexRoute = {component : Component}
 
 // from react-router:
 type Route = {
-  component: Component,
-  path?: string,
-  getIndexRoute?: (_partialNextState: any, callback: (err: any, indexRoute: IndexRoute) => any) => void,
-  getChildRoutes?: (_partialNextState: any, callback: (err: any, childRoutes: [Route]) => any) => void,
+  component : Component,
+  path? : string,
+  getIndexRoute? : (_partialNextState : any, callback : (err : any, indexRoute : IndexRoute) => any) => void,
+  getChildRoutes? : (_partialNextState : any, callback : (err : any, childRoutes : [Route]) => any) => void,
 }
 
 */
@@ -40,38 +43,38 @@ type Route = {
 /*::
 
 type Branch = {
-  predicate: (state: State) => boolean,
-  indexRoute: IndexRoute,
-  childRoutes: [Route],
-  fallback?: Action,
-  name: string
+  predicate : (state : State) => boolean,
+  indexRoute : IndexRoute,
+  childRoutes : [Route],
+  fallback? : Action,
+  name : string
 }
 
 type IndexRouteTransformer = (
-  indexRoute: IndexRoute,
-  filter: (state: State) => State,
-  predicate: (state: State) => boolean,
-  fallback?: Action,
-  name: string
+  indexRoute : IndexRoute,
+  filter : (state : State) => State,
+  predicate : (state : State) => boolean,
+  fallback? : Action,
+  name : string
 )
   => IndexRoute
 
 
 type ChildRoutesTransformer = (
-  childRoutes: [Route],
-  filter: (state: State) => State,
-  predicate: (state: State) => boolean,
-  fallback?: Action,
-  name: string
+  childRoutes : [Route],
+  filter : (state : State) => State,
+  predicate : (state : State) => boolean,
+  fallback? : Action,
+  name : string
 )
   => [Route]
 
 
 type RouteModifier = (
-  getState: () => State,
-  filter: (state: State) => State,
-  branches: [Branch],
-  route: Route
+  getState : () => State,
+  filter : (state : State) => State,
+  branches : [Branch],
+  route : Route
 )
   => void
 
@@ -79,8 +82,8 @@ type RouteModifier = (
 
 const _makeRouteModifier /*:
 (
-  irt: IndexRouteTransformer,
-  crt: ChildRoutesTransformer
+  irt : IndexRouteTransformer,
+  crt : ChildRoutesTransformer
 )
   => RouteModifier
 */
@@ -109,10 +112,10 @@ const _makeRouteModifier /*:
 
 const makeGuard /*:
 (
-  filter: (state: State) => State,
-  predicate: (state: State) => boolean,
-  fallback: Action,
-  name: string
+  filter : (state : State) => State,
+  predicate : (state : State) => boolean,
+  fallback : Action,
+  name : string
 )
   => Component
 */
@@ -137,8 +140,8 @@ const makeGuard /*:
 
 const Contain /*:
 (
-  parent: Component,
-  child: Component
+  parent : Component,
+  child : Component
 )
   => Component
 */
@@ -179,15 +182,15 @@ RouteModifier
 
 /*::
 type Options = {
-  filter?: (state: State) => State,
-  guard?: boolean
+  filter? : (state : State) => State,
+  guard? : boolean
 }
 */
 
 const matcher /*:
-(getState: () => State, options?: Options)
-  => (branches: [Branch])
-  => (route: Route)
+(store : Store, options? : Options)
+  => (branches : [Branch])
+  => (route : Route)
   => Route
 */
 = ({getState: getStateRaw}, options={}) => (branches) => (route) => {
