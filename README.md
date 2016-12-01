@@ -2,9 +2,13 @@
 
 This library provides a nice little API to match to your routes dynamically based on your app's state. 
 
-Works with Apps that use redux and [redux-thunk](https://github.com/gaearon/redux-thunk).
+It works with apps that use redux and [redux-thunk](https://github.com/gaearon/redux-thunk).
+
+---
 
 [React Router R](https://github.com/sleexyz/react-router-r) compatible.
+
+---
 
 ## Applications:
 
@@ -46,8 +50,8 @@ where
 
 ```js
 type Options = {
-  filter? : (state: State) => State,
-  guard? : boolean
+  guard? : boolean,
+  filter? : (state: State) => State
 }
 
 type Branch = {
@@ -91,4 +95,4 @@ When it set to false, then components are not guarded.
 
 `filter` *is set to* `(x) => x` *by default.*
 
-`filter` just provides a way of ensuring that your dynamic matcher can only see the parts of the app state that you've specified.
+`filter` just provides a way of ensuring that your dynamic matcher can only see the parts of the app state that you've specified. It also fills in as react-redux's `mapStateToProps` for the Guard component, if `guard` is set to true.
