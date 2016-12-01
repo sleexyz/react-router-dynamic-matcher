@@ -1,7 +1,7 @@
 {
   "name": "react-router-dynamic-matcher",
   "version": "0.0.0",
-  "description": "Match to routes dynamically based on your app's state.",
+  "description": "Match routes dynamically based on your Redux state.",
   "main": "index.js",
   "repository": {
     "url": "https://github.com/sleexyz/react-router-dynamic-matcher",
