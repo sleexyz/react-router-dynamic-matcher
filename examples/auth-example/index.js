@@ -5,7 +5,7 @@ const {createStore, applyMiddleware} = require("redux");
 const {default: thunk} = require("redux-thunk");
 const {connect, Provider} = require("react-redux");
 
-const matcher = require("../index.js");
+const matcher = require("../../index.js");
 
 const logger = store => next => action => {
   const result = next(action);
