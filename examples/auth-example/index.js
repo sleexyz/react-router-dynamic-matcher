@@ -32,7 +32,7 @@ const App = connect((state) => state)(createClass({
     const buttonText = this.props.authenticated ? "Logout" : "Login";
     return (
     <div>
-      <h1>React Router Dynamic Matcher Example</h1>
+      <h1>React Router Dynamic Matcher Example - Auth</h1>
       <p>
         <button onClick={this._onClick}>{buttonText}</button>
       </p>
@@ -56,13 +56,13 @@ const CustomComponent = (msg) => connect((state) => state)(
   }
 );
 
+const Index = CustomComponent("(index)");
+const About = CustomComponent("/about");
+
 const options = {
   filter: ({authenticated}) => ({authenticated}),
   guard: true
 };
-
-const Index = CustomComponent("(index)");
-const About = CustomComponent("/about");
 
 const routes = matcher(store, options) ([
   {
