@@ -1,6 +1,6 @@
 {
   "name": "react-router-dynamic-matcher",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Match routes dynamically based on your Redux state.",
   "main": "index.js",
   "repository": {
@@ -14,5 +14,14 @@
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0"
+  },
+  "scripts": {
+    "build": "babel index_src.js > index.js"
   }
 }

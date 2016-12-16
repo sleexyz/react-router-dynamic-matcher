@@ -1,210 +1,169 @@
-// @flow
-const {createClass, createFactory, createElement: e} = require("react");
-const {connect} = require("react-redux");
+"use strict";
+
+var _require = require("react"),
+    createClass = _require.createClass,
+    createFactory = _require.createFactory,
+    e = _require.createElement;
+
+var _require2 = require("react-redux"),
+    connect = _require2.connect;
+
 require("redux-thunk");
 require("redux");
 
-/*::
+var _makeRouteModifier = function _makeRouteModifier(indexRouteTransformer, childRoutesTransformer) {
+  return function (getState, filter, branches, route) {
+    route.getIndexRoute = function (_partialNextState, cb) {
+      var state = getState();
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-// from React:
-type Component = Object
+      try {
+        for (var _iterator = branches[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _step$value = _step.value,
+              _predicate = _step$value.predicate,
+              _indexRoute = _step$value.indexRoute,
+              _fallback = _step$value.fallback,
+              _name = _step$value.name;
 
-// from your app:
-type State = Object
-
-// from redux:
-type Store = Object
-
-// from redux-thunk:
-type Dispatch = function
-
-// from redux-thunk:
-type Action = (
-  dispatch : Dispatch,
-  getState : () => State,
-  extraArgument : any
-)
-  => void
-
-
-// from react-router:
-type IndexRoute = {component : Component}
-
-// from react-router:
-type Route = {
-  component : Component,
-  path? : string,
-  getIndexRoute? : (_partialNextState : any, callback : (err : any, indexRoute : IndexRoute) => any) => void,
-  getChildRoutes? : (_partialNextState : any, callback : (err : any, childRoutes : [Route]) => any) => void,
-}
-
-*/
-
-/*::
-
-type Branch = {
-  predicate : (state : State) => boolean,
-  indexRoute : IndexRoute,
-  childRoutes : [Route],
-  fallback? : Action,
-  name : string
-}
-
-type IndexRouteTransformer = (
-  indexRoute : IndexRoute,
-  filter : (state : State) => State,
-  predicate : (state : State) => boolean,
-  fallback? : Action,
-  name : string
-)
-  => IndexRoute
-
-
-type ChildRoutesTransformer = (
-  childRoutes : [Route],
-  filter : (state : State) => State,
-  predicate : (state : State) => boolean,
-  fallback? : Action,
-  name : string
-)
-  => [Route]
-
-
-type RouteModifier = (
-  getState : () => State,
-  filter : (state : State) => State,
-  branches : [Branch],
-  route : Route
-)
-  => void
-
-*/
-
-const _makeRouteModifier /*:
-(
-  irt : IndexRouteTransformer,
-  crt : ChildRoutesTransformer
-)
-  => RouteModifier
-*/
-= (indexRouteTransformer, childRoutesTransformer) => function (getState, filter, branches, route) {
-  route.getIndexRoute = (_partialNextState, cb) => {
-    const state = getState();
-    for (let {predicate, indexRoute, fallback, name} of branches) {
-      if (predicate(state)) {
-        const err = null;
-        cb(err, indexRouteTransformer(indexRoute, filter, predicate, fallback, name));
-        return;
+          if (_predicate(state)) {
+            var _err = null;
+            cb(_err, indexRouteTransformer(_indexRoute, filter, _predicate, _fallback, _name));
+            return;
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
       }
-    }
-  };
-  route.getChildRoutes = (_partialNextState, cb) => {
-    const state = getState();
-    for (let {predicate, childRoutes, fallback, name} of branches) {
-      if (predicate(state)) {
-        const err = null;
-        cb(err, childRoutesTransformer(childRoutes, filter, predicate, fallback, name));
-        return;
+    };
+    route.getChildRoutes = function (_partialNextState, cb) {
+      var state = getState();
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = branches[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _step2$value = _step2.value,
+              _predicate2 = _step2$value.predicate,
+              _childRoutes = _step2$value.childRoutes,
+              _fallback2 = _step2$value.fallback,
+              _name2 = _step2$value.name;
+
+          if (_predicate2(state)) {
+            var _err2 = null;
+            cb(_err2, childRoutesTransformer(_childRoutes, filter, _predicate2, _fallback2, _name2));
+            return;
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
       }
-    }
+    };
   };
 };
 
-const makeGuard /*:
-(
-  filter : (state : State) => State,
-  predicate : (state : State) => boolean,
-  fallback : Action,
-  name : string
-)
-  => Component
-*/
-= (filter, predicate, fallback, name) => connect(filter)(createClass({
-  _check(props) {
-    if (!predicate(props)) {
-      const {dispatch} = props;
-      dispatch(fallback);
-    }
-  },
-  displayName: name + 'Guard',
-  componentWillMount() {
-    this._check(this.props);
-  },
-  componentWillReceiveProps(props) {
-    this._check(props);
-  },
-  render() {
-    return this.props.children;
-  }
-}));
+var makeGuard = function makeGuard(filter, predicate, fallback, name) {
+  return connect(filter)(createClass({
+    _check: function _check(props) {
+      if (!predicate(props)) {
+        var _dispatch = props.dispatch;
 
-const Contain /*:
-(
-  parent : Component,
-  child : Component
-)
-  => Component
-*/
-= (parent, child) => {
-  const Parent = createFactory(parent);
-  const Child = createFactory(child);
-  return ({children}) => {
+        _dispatch(fallback);
+      }
+    },
+
+    displayName: name + 'Guard',
+    componentWillMount: function componentWillMount() {
+      this._check(this.props);
+    },
+    componentWillReceiveProps: function componentWillReceiveProps(props) {
+      this._check(props);
+    },
+    render: function render() {
+      return this.props.children;
+    }
+  }));
+};
+
+var Contain = function Contain(parent, child) {
+  var Parent = createFactory(parent);
+  var Child = createFactory(child);
+  return function (_ref) {
+    var children = _ref.children;
+
     return Parent({}, Child({}, children));
   };
 };
 
-
-const _modifyRouteGuarded /*:
-RouteModifier
-*/
-= _makeRouteModifier(
-  (indexRoute, filter, predicate, fallback, name) => {
-    if (fallback === undefined) {
-      throw new Error("fallback not declared for guarded matcher!");
-    }
-    const component = Contain(makeGuard(filter, predicate, fallback, name), indexRoute.component);
-    component.displayName = name + "GuardContainer";
-    return {component};
-  },
-  (childRoutes, filter, predicate, fallback, name) => {
-    if (fallback === undefined) {
-      throw new Error("fallback not declared for guarded matcher!");
-    }
-    const component = makeGuard(filter, predicate, fallback, name);
-    return [{childRoutes, component}];
+var _modifyRouteGuarded = _makeRouteModifier(function (indexRoute, filter, predicate, fallback, name) {
+  if (fallback === undefined) {
+    throw new Error("fallback not declared for guarded matcher!");
   }
-);
-
-const _modifyRouteUnguarded /*:
-RouteModifier
-*/
-= _makeRouteModifier((x) => x, (x) => x);
-
-/*::
-type Options = {
-  filter? : (state : State) => State,
-  guard? : boolean
-}
-*/
-
-const matcher /*:
-(store : Store, options? : Options)
-  => (branches : [Branch])
-  => (route : Route)
-  => Route
-*/
-= ({getState: getStateRaw}, options={}) => (branches) => (route) => {
-  const {
-    filter = (x) => x,
-    guard = true
-  } = options;
-  const getState = () => filter(getStateRaw());
-  if (guard) {
-    _modifyRouteGuarded(getState, filter, branches, route);
-  } else {
-    _modifyRouteUnguarded(getState, filter, branches, route);
+  var component = Contain(makeGuard(filter, predicate, fallback, name), indexRoute.component);
+  component.displayName = name + "GuardContainer";
+  return { component: component };
+}, function (childRoutes, filter, predicate, fallback, name) {
+  if (fallback === undefined) {
+    throw new Error("fallback not declared for guarded matcher!");
   }
-  return route;
+  var component = makeGuard(filter, predicate, fallback, name);
+  return [{ childRoutes: childRoutes, component: component }];
+});
+
+var _modifyRouteUnguarded = _makeRouteModifier(function (x) {
+  return x;
+}, function (x) {
+  return x;
+});
+
+var matcher = function matcher(_ref2) {
+  var getStateRaw = _ref2.getState;
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return function (branches) {
+    return function (route) {
+      var _options$filter = options.filter,
+          filter = _options$filter === undefined ? function (x) {
+        return x;
+      } : _options$filter,
+          _options$guard = options.guard,
+          guard = _options$guard === undefined ? true : _options$guard;
+
+      var getState = function getState() {
+        return filter(getStateRaw());
+      };
+      if (guard) {
+        _modifyRouteGuarded(getState, filter, branches, route);
+      } else {
+        _modifyRouteUnguarded(getState, filter, branches, route);
+      }
+      return route;
+    };
+  };
 };
 
 module.exports = matcher;
+
