@@ -1,6 +1,6 @@
 {
   "name": "react-router-dynamic-matcher",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Match routes dynamically based on your Redux state.",
   "main": "index.js",
   "repository": {

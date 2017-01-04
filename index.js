@@ -15,71 +15,33 @@ var _makeRouteModifier = function _makeRouteModifier(indexRouteTransformer, chil
   return function (getState, filter, branches, route) {
     route.getIndexRoute = function (_partialNextState, cb) {
       var state = getState();
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+      for (var i = 0; i < branches.length; i++) {
+        var _branches$i = branches[i],
+            _predicate = _branches$i.predicate,
+            _indexRoute = _branches$i.indexRoute,
+            _fallback = _branches$i.fallback,
+            _name = _branches$i.name;
 
-      try {
-        for (var _iterator = branches[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _step$value = _step.value,
-              _predicate = _step$value.predicate,
-              _indexRoute = _step$value.indexRoute,
-              _fallback = _step$value.fallback,
-              _name = _step$value.name;
-
-          if (_predicate(state)) {
-            var _err = null;
-            cb(_err, indexRouteTransformer(_indexRoute, filter, _predicate, _fallback, _name));
-            return;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
+        if (_predicate(state)) {
+          var _err = null;
+          cb(_err, indexRouteTransformer(_indexRoute, filter, _predicate, _fallback, _name));
+          return;
         }
       }
     };
     route.getChildRoutes = function (_partialNextState, cb) {
       var state = getState();
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+      for (var i = 0; i < branches.length; i++) {
+        var _branches$i2 = branches[i],
+            _predicate2 = _branches$i2.predicate,
+            _childRoutes = _branches$i2.childRoutes,
+            _fallback2 = _branches$i2.fallback,
+            _name2 = _branches$i2.name;
 
-      try {
-        for (var _iterator2 = branches[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _step2$value = _step2.value,
-              _predicate2 = _step2$value.predicate,
-              _childRoutes = _step2$value.childRoutes,
-              _fallback2 = _step2$value.fallback,
-              _name2 = _step2$value.name;
-
-          if (_predicate2(state)) {
-            var _err2 = null;
-            cb(_err2, childRoutesTransformer(_childRoutes, filter, _predicate2, _fallback2, _name2));
-            return;
-          }
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
+        if (_predicate2(state)) {
+          var _err2 = null;
+          cb(_err2, childRoutesTransformer(_childRoutes, filter, _predicate2, _fallback2, _name2));
+          return;
         }
       }
     };

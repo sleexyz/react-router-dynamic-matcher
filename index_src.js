@@ -73,7 +73,8 @@ const _makeRouteModifier :
 = (indexRouteTransformer, childRoutesTransformer) => function (getState, filter, branches, route) {
   route.getIndexRoute = (_partialNextState, cb) => {
     const state = getState();
-    for (let {predicate, indexRoute, fallback, name} of branches) {
+    for (let i = 0; i < branches.length; i++) {
+      let {predicate, indexRoute, fallback, name} = branches[i];
       if (predicate(state)) {
         const err = null;
         cb(err, indexRouteTransformer(indexRoute, filter, predicate, fallback, name));
@@ -83,7 +84,8 @@ const _makeRouteModifier :
   };
   route.getChildRoutes = (_partialNextState, cb) => {
     const state = getState();
-    for (let {predicate, childRoutes, fallback, name} of branches) {
+    for (let i = 0; i < branches.length; i++) {
+      let {predicate, childRoutes, fallback, name} = branches[i];
       if (predicate(state)) {
         const err = null;
         cb(err, childRoutesTransformer(childRoutes, filter, predicate, fallback, name));
